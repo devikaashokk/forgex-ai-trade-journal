@@ -1,0 +1,133 @@
+/* client/src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 12 100% 98%;
+    --foreground: 10 45% 10%;
+
+    --card: 12 100% 97%;
+    --card-foreground: 10 45% 10%;
+
+    --border: 12 70% 85%;
+    --input: 12 70% 85%;
+
+    /* 🔥 Scarlet Fire */
+    --primary: 12 93% 55%; /* #F42B03 equivalent */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 12 70% 92%;
+    --secondary-foreground: 10 45% 12%;
+
+    --muted: 12 60% 94%;
+    --muted-foreground: 10 25% 40%;
+
+    --accent: 12 80% 88%;
+    --accent-foreground: 10 45% 10%;
+
+    --destructive: 0 78% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --ring: 12 93% 55%;
+    --radius: 0.6rem;
+  }
+
+  .dark {
+    --background: 10 40% 6%;
+    --foreground: 12 95% 88%;
+
+    --card: 10 35% 8%;
+    --card-foreground: 12 95% 88%;
+
+    --border: 10 25% 16%;
+    --input: 10 25% 16%;
+
+    /* 🔥 Scarlet glow (dark mode) */
+    --primary: 12 95% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 10 20% 12%;
+    --secondary-foreground: 12 90% 88%;
+
+    --muted: 10 20% 12%;
+    --muted-foreground: 12 35% 65%;
+
+    --accent: 10 22% 14%;
+    --accent-foreground: 12 95% 88%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --ring: 12 95% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--border));
+    border-radius: 9999px;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .number-mono {
+    @apply font-mono tabular-nums;
+  }
+
+  /* Profit / Loss color utilities */
+  .text-profit {
+    color: #00D4AA;
+  }
+
+  .text-loss {
+    color: #FF4D6D;
+  }
+
+  .bg-profit-subtle {
+    background-color: rgba(0, 212, 170, 0.1);
+  }
+
+  .bg-loss-subtle {
+    background-color: rgba(255, 77, 109, 0.1);
+  }
+}
+
+/* Custom recharts tooltip */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 8px !important;
+  color: hsl(var(--foreground)) !important;
+}

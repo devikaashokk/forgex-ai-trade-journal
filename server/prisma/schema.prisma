@@ -1,0 +1,79 @@
+// server/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  trades        Trade[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model Trade {
+  id          String         @id @default(cuid())
+  userId      String
+  pair        String         // e.g., "EUR/USD"
+  direction   TradeDirection
+  entryPrice  Float
+  exitPrice   Float
+  stopLoss    Float
+  takeProfit  Float
+  lotSize     Float          @default(0.01)
+  pnl         Float          // Profit/Loss in USD
+  rrRatio     Float          // Risk/Reward ratio achieved
+  emotion     TradeEmotion
+  notes       String         @default("")
+  isWin       Boolean
+  openedAt    DateTime
+  closedAt    DateTime
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, closedAt])
+  @@map("trades")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+enum TradeDirection {
+  LONG
+  SHORT
+}
+
+enum TradeEmotion {
+  CONFIDENT
+  ANXIOUS
+  GREEDY
+  FEARFUL
+  NEUTRAL
+  FOMO
+  REVENGE
+}
