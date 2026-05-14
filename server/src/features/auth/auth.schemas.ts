@@ -8,6 +8,8 @@ export const registerSchema = z.object({
     .string()
     .min(8, "Password must be at least 8 characters")
     .max(100),
+  initialBalance: z.coerce.number().min(0).default(0),
+  currency: z.string().min(2).max(5).default("INR"),
 });
 
 export const loginSchema = z.object({

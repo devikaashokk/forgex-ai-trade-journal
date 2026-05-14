@@ -152,6 +152,14 @@ export async function getDashboardStats(req: AuthRequest, res: Response, next: N
   try {
     const userId = req.userId!;
 
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { initialBalance: true, currency: true },
+    });
+
+    const initialBalance = user?.initialBalance ?? 0;
+    const currency = user?.currency ?? "INR";
+
     const allTrades = await prisma.trade.findMany({
       where: { userId },
       orderBy: { closedAt: "asc" },
@@ -163,7 +171,11 @@ export async function getDashboardStats(req: AuthRequest, res: Response, next: N
         data: {
           totalTrades: 0,
           winRate: 0,
+          initialBalance,
+          currentBalance: initialBalance,
+          currency,
           totalPnl: 0,
+          growthPercent: 0,
           avgRR: 0,
           longestWinStreak: 0,
           longestLoseStreak: 0,
@@ -189,15 +201,22 @@ export async function getDashboardStats(req: AuthRequest, res: Response, next: N
       emotionBreakdown[t.emotion] = (emotionBreakdown[t.emotion] || 0) + 1;
     }
 
-    const equityCurve = buildEquityCurve(allTrades);
-    const recentTrades = [...allTrades].reverse().slice(0, 10);
+    const currentBalance = initialBalance + totalPnl;
+    const growthPercent =
+      initialBalance > 0 ? Math.round(((currentBalance - initialBalance) / initialBalance) * 100 * 100) / 100 : 0;
+
+    const equityCurve = buildEquityCurve(allTrades, initialBalance); const recentTrades = [...allTrades].reverse().slice(0, 10);
 
     res.json({
       success: true,
       data: {
+        initialBalance,
+        currentBalance: Math.round(currentBalance * 100) / 100,
+        currency,
         totalTrades: allTrades.length,
         winRate: Math.round((wins.length / allTrades.length) * 100 * 10) / 10,
         totalPnl: Math.round(totalPnl * 100) / 100,
+        growthPercent,
         avgRR: Math.round(avgRR * 100) / 100,
         longestWinStreak: longestWin,
         longestLoseStreak: longestLoss,

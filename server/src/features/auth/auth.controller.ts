@@ -18,8 +18,21 @@ export async function register(req: Request, res: Response, next: NextFunction):
 
     const passwordHash = await bcrypt.hash(body.password, 12);
     const user = await prisma.user.create({
-      data: { name: body.name, email: body.email, passwordHash },
-      select: { id: true, email: true, name: true, createdAt: true },
+      data: {
+        name: body.name,
+        email: body.email,
+        passwordHash,
+        initialBalance: body.initialBalance,
+        currency: body.currency,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        initialBalance: true,
+        currency: true,
+        createdAt: true,
+      },
     });
 
     const accessToken = signAccessToken({ userId: user.id, email: user.email });
@@ -66,8 +79,14 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
     res.json({
       success: true,
       data: {
-        user: { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt },
-        accessToken,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          initialBalance: user.initialBalance,
+          currency: user.currency,
+          createdAt: user.createdAt,
+        }, accessToken,
         refreshToken: refreshTokenValue,
       },
     });
@@ -110,7 +129,14 @@ export async function me(req: AuthRequest, res: Response, next: NextFunction): P
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.userId },
-      select: { id: true, email: true, name: true, createdAt: true },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        initialBalance: true,
+        currency: true,
+        createdAt: true,
+      },
     });
     if (!user) throw new AppError("User not found", 404);
     res.json({ success: true, data: { user } });

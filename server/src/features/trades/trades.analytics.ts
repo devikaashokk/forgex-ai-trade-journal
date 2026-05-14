@@ -49,9 +49,11 @@ export function determineWin(direction: "LONG" | "SHORT", pnl: number): boolean 
  * Build equity curve from sorted trades.
  */
 export function buildEquityCurve(
-  trades: Trade[]
+  trades: Trade[],
+  initialBalance = 0
 ): { date: string; equity: number }[] {
-  let running = 0;
+  let running = initialBalance;
+
   return trades.map((t) => {
     running += t.pnl;
     return {
