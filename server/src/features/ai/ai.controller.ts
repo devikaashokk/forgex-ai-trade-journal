@@ -27,8 +27,7 @@ export async function getFullAnalysis(req: AuthRequest, res: Response, next: Nex
 
 export async function analyzeNote(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
-    const { tradeId } = req.params;
-
+    const tradeId = String(req.params.tradeId);
     const trade = await prisma.trade.findFirst({
       where: { id: tradeId, userId: req.userId },
     });

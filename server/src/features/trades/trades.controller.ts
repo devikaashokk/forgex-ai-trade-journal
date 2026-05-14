@@ -87,7 +87,7 @@ export async function getTrades(req: AuthRequest, res: Response, next: NextFunct
 
 export async function getTradeById(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const trade = await prisma.trade.findFirst({
       where: { id, userId: req.userId },
     });
@@ -100,7 +100,7 @@ export async function getTradeById(req: AuthRequest, res: Response, next: NextFu
 
 export async function updateTrade(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const body = updateTradeSchema.parse(req.body);
 
     const existing = await prisma.trade.findFirst({ where: { id, userId: req.userId } });
@@ -137,7 +137,7 @@ export async function updateTrade(req: AuthRequest, res: Response, next: NextFun
 
 export async function deleteTrade(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const existing = await prisma.trade.findFirst({ where: { id, userId: req.userId } });
     if (!existing) throw new AppError("Trade not found", 404);
 
