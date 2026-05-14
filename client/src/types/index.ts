@@ -16,6 +16,8 @@ export interface User {
   email: string;
   name: string;
   createdAt: string;
+  initialBalance: number;
+  currency: string;
 }
 
 export interface Trade {
@@ -65,6 +67,10 @@ export interface DashboardStats {
   emotionBreakdown: Record<string, number>;
   equityCurve: { date: string; equity: number }[];
   recentTrades: Trade[];
+  initialBalance: number;
+  currentBalance: number;
+  currency: string;
+  growthPercent: number;
 }
 
 export interface AIAnalysis {

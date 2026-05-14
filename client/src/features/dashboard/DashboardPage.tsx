@@ -11,6 +11,8 @@ import {
   Trophy,
   AlertTriangle,
   ArrowRight,
+  Wallet,
+  IndianRupee,
 } from "lucide-react";
 import { DashboardStats, Trade } from "@/types";
 import { getDashboardStats } from "./dashboard.api";
@@ -105,6 +107,14 @@ export function DashboardPage() {
 
   const pnlTrend = stats.totalPnl >= 0 ? "up" : "down";
   const winRateTrend = stats.winRate >= 50 ? "up" : "down";
+  const balanceTrend = stats.currentBalance >= stats.initialBalance ? "up" : "down";
+
+  const formatMoney = (value: number) =>
+    new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: stats.currency || "INR",
+      maximumFractionDigits: 0,
+    }).format(value);
 
   return (
     <div className="space-y-6">
@@ -123,13 +133,22 @@ export function DashboardPage() {
       </div>
 
       {/* Stats grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatCard
+          label="Current Balance"
+          value={formatMoney(stats.currentBalance)}
+          icon={Wallet}
+          trend={balanceTrend}
+          subtext={`Started: ${formatMoney(stats.initialBalance)}`}
+          delay={0}
+        />
         <StatCard
           label="Total P&L"
-          value={formatCurrency(stats.totalPnl)}
+          value={formatMoney(stats.totalPnl)}
           icon={stats.totalPnl >= 0 ? TrendingUp : TrendingDown}
           trend={pnlTrend}
-          delay={0}
+          subtext={`${stats.growthPercent}% growth`}
+          delay={0.05}
         />
         <StatCard
           label="Win Rate"
@@ -137,27 +156,35 @@ export function DashboardPage() {
           icon={Target}
           trend={winRateTrend}
           subtext={`${stats.totalTrades} total trades`}
-          delay={0.05}
+          delay={0.1}
+        />
+        <StatCard
+          label="Best Trade"
+          value={formatMoney(stats.bestTrade)}
+          icon={Trophy}
+          trend="up"
+          subtext={`Worst: ${formatMoney(stats.worstTrade)}`}
+          delay={0.15}
+        />
+      </div>
+
+      {/* Secondary stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatCard
+          label="Initial Balance"
+          value={formatMoney(stats.initialBalance)}
+          icon={IndianRupee}
+          trend="neutral"
+          subtext={stats.currency || "INR"}
+          delay={0.2}
         />
         <StatCard
           label="Avg R:R"
           value={`${stats.avgRR}R`}
           icon={BarChart3}
           trend="neutral"
-          delay={0.1}
+          delay={0.25}
         />
-        <StatCard
-          label="Best Trade"
-          value={formatCurrency(stats.bestTrade)}
-          icon={Trophy}
-          trend="up"
-          subtext={`Worst: ${formatCurrency(stats.worstTrade)}`}
-          delay={0.15}
-        />
-      </div>
-
-      {/* Secondary stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard
           label="Win Streak"
           value={`${stats.longestWinStreak}`}

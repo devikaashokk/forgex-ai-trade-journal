@@ -16,8 +16,8 @@ interface StatCardProps {
 export function StatCard({ label, value, subtext, icon: Icon, trend, className, delay = 0 }: StatCardProps) {
   const trendColor =
     trend === "up" ? "text-forge-500" :
-    trend === "down" ? "text-red-500" :
-    "text-muted-foreground";
+      trend === "down" ? "text-red-500" :
+        "text-muted-foreground";
 
   return (
     <motion.div
@@ -35,7 +35,7 @@ export function StatCard({ label, value, subtext, icon: Icon, trend, className, 
           <Icon className="h-3.5 w-3.5 text-primary" />
         </div>
       </div>
-      <p className={cn("text-2xl font-display font-bold number-mono", trendColor)}>{value}</p>
+      <p className={cn("text-xl sm:text-2xl font-bold number-mono break-words leading-tight max-w-full overflow-hidden text-ellipsis", trendColor)}>{value}</p>
       {subtext && <p className="text-xs text-muted-foreground mt-1">{subtext}</p>}
     </motion.div>
   );
