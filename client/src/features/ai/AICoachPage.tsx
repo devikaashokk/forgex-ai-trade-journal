@@ -239,8 +239,13 @@ export function AICoachPage() {
                 className="sm:col-span-1"
               >
                 <Card className="h-full flex flex-col items-center justify-center">
-                  <DisciplineScore score={analysis.disciplineScore} />
-                </Card>
+                  <DisciplineScore
+                    score={
+                      analysis.disciplineScore <= 1
+                        ? Math.round(analysis.disciplineScore * 100)
+                        : Math.round(analysis.disciplineScore)
+                    }
+                  />                </Card>
               </motion.div>
 
               <motion.div

@@ -5,62 +5,111 @@
 
 @layer base {
   :root {
-    --background: 12 100% 98%;
-    --foreground: 10 45% 10%;
+    /* ─────────────────────────────────────────
+       INDUSTRIAL LIGHT MODE
+    ───────────────────────────────────────── */
 
-    --card: 12 100% 97%;
-    --card-foreground: 10 45% 10%;
+    --background: 210 25% 97%;
+    --foreground: 220 22% 12%;
 
-    --border: 12 70% 85%;
-    --input: 12 70% 85%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 22% 12%;
 
-    /* 🔥 Scarlet Fire */
-    --primary: 12 93% 55%; /* #F42B03 equivalent */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 22% 12%;
+
+    --border: 220 18% 88%;
+    --input: 220 18% 88%;
+
+    /* Premium Burnt Orange */
+    --primary: 22 95% 56%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 12 70% 92%;
-    --secondary-foreground: 10 45% 12%;
+    /* Steel Gray */
+    --secondary: 220 14% 94%;
+    --secondary-foreground: 220 20% 18%;
 
-    --muted: 12 60% 94%;
-    --muted-foreground: 10 25% 40%;
+    --muted: 220 14% 95%;
+    --muted-foreground: 220 10% 42%;
 
-    --accent: 12 80% 88%;
-    --accent-foreground: 10 45% 10%;
+    --accent: 24 100% 94%;
+    --accent-foreground: 24 90% 30%;
 
-    --destructive: 0 78% 55%;
+    --destructive: 0 78% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --ring: 12 93% 55%;
-    --radius: 0.6rem;
+    --ring: 24 95% 56%;
+
+    --radius: 1rem;
+
+    /* ─────────────────────────────────────────
+       CUSTOM BRAND TOKENS
+    ───────────────────────────────────────── */
+
+    --panel: 220 20% 99%;
+    --panel-foreground: 220 20% 14%;
+
+    --sidebar: 220 18% 96%;
+    --sidebar-foreground: 220 20% 14%;
+
+    --success: 142 76% 45%;
+    --warning: 38 92% 50%;
+    --danger: 0 82% 58%;
+
+    --orange-glow: 24 100% 58%;
   }
 
   .dark {
-    --background: 10 40% 6%;
-    --foreground: 12 95% 88%;
+    /* ─────────────────────────────────────────
+       INDUSTRIAL DARK MODE
+    ───────────────────────────────────────── */
 
-    --card: 10 35% 8%;
-    --card-foreground: 12 95% 88%;
+    --background: 210 28% 6%;
+    --foreground: 210 20% 92%;
 
-    --border: 10 25% 16%;
-    --input: 10 25% 16%;
+    --card: 210 24% 9%;
+    --card-foreground: 210 18% 92%;
 
-    /* 🔥 Scarlet glow (dark mode) */
-    --primary: 12 95% 60%;
+    --popover: 210 24% 9%;
+    --popover-foreground: 210 18% 92%;
+
+    --border: 210 18% 16%;
+    --input: 210 18% 16%;
+
+    /* Burnt Industrial Orange */
+    --primary: 24 96% 56%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 10 20% 12%;
-    --secondary-foreground: 12 90% 88%;
+    /* Graphite */
+    --secondary: 210 18% 12%;
+    --secondary-foreground: 210 18% 88%;
 
-    --muted: 10 20% 12%;
-    --muted-foreground: 12 35% 65%;
+    --muted: 210 18% 11%;
+    --muted-foreground: 210 10% 62%;
 
-    --accent: 10 22% 14%;
-    --accent-foreground: 12 95% 88%;
+    --accent: 210 18% 13%;
+    --accent-foreground: 24 95% 72%;
 
-    --destructive: 0 72% 50%;
+    --destructive: 0 74% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --ring: 12 95% 60%;
+    --ring: 24 96% 56%;
+
+    /* ─────────────────────────────────────────
+       CUSTOM DARK TOKENS
+    ───────────────────────────────────────── */
+
+    --panel: 210 24% 10%;
+    --panel-foreground: 210 20% 92%;
+
+    --sidebar: 210 24% 8%;
+    --sidebar-foreground: 210 18% 88%;
+
+    --success: 142 72% 48%;
+    --warning: 38 92% 52%;
+    --danger: 0 82% 60%;
+
+    --orange-glow: 24 100% 58%;
   }
 }
 
@@ -69,24 +118,61 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  html {
+    scroll-behavior: smooth;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings:
+      "cv02",
+      "cv03",
+      "cv04",
+      "cv11";
+
+    background:
+      radial-gradient(
+        circle at top left,
+        rgba(255, 115, 0, 0.08),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at bottom right,
+        rgba(255, 140, 0, 0.05),
+        transparent 22%
+      ),
+      hsl(var(--background));
+
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    background: rgba(255, 115, 0, 0.25);
   }
 }
 
 @layer utilities {
+  /* ─────────────────────────────────────────
+     SCROLLBAR
+  ───────────────────────────────────────── */
+
   .scrollbar-thin {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) transparent;
   }
 
   .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
+    height: 5px;
   }
 
   .scrollbar-thin::-webkit-scrollbar-track {
@@ -98,6 +184,14 @@
     border-radius: 9999px;
   }
 
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--primary));
+  }
+
+  /* ─────────────────────────────────────────
+     TEXT
+  ───────────────────────────────────────── */
+
   .text-balance {
     text-wrap: balance;
   }
@@ -106,28 +200,104 @@
     @apply font-mono tabular-nums;
   }
 
-  /* Profit / Loss color utilities */
+  /* ─────────────────────────────────────────
+     P&L COLORS
+  ───────────────────────────────────────── */
+
   .text-profit {
-    color: #00D4AA;
+    color: #4ade80;
   }
 
   .text-loss {
-    color: #FF4D6D;
+    color: #fb7185;
   }
 
   .bg-profit-subtle {
-    background-color: rgba(0, 212, 170, 0.1);
+    background-color: rgba(74, 222, 128, 0.12);
   }
 
   .bg-loss-subtle {
-    background-color: rgba(255, 77, 109, 0.1);
+    background-color: rgba(251, 113, 133, 0.12);
+  }
+
+  /* ─────────────────────────────────────────
+     INDUSTRIAL SURFACES
+  ───────────────────────────────────────── */
+
+  .glass-panel {
+    background: rgba(16, 20, 24, 0.78);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .industrial-card {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,0.03),
+        rgba(255,255,255,0.01)
+      );
+    border: 1px solid rgba(255,255,255,0.06);
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.04),
+      0 10px 35px rgba(0,0,0,0.28);
+  }
+
+  .orange-glow {
+    box-shadow:
+      0 0 0 1px rgba(255,115,0,0.12),
+      0 0 24px rgba(255,115,0,0.22);
+  }
+
+  .hover-lift {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+      0 14px 40px rgba(0,0,0,0.35),
+      0 0 0 1px rgba(255,115,0,0.12);
+
+    border-color: rgba(255, 115, 0, 0.25);
   }
 }
 
-/* Custom recharts tooltip */
+/* ─────────────────────────────────────────
+   RECHARTS TOOLTIP
+───────────────────────────────────────── */
+
 .recharts-tooltip-wrapper .recharts-default-tooltip {
   background: hsl(var(--card)) !important;
   border: 1px solid hsl(var(--border)) !important;
-  border-radius: 8px !important;
+  border-radius: 14px !important;
   color: hsl(var(--foreground)) !important;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* ─────────────────────────────────────────
+   CHART GRID
+───────────────────────────────────────── */
+
+.recharts-cartesian-grid line {
+  stroke: rgba(255,255,255,0.05);
+}
+
+.recharts-tooltip-cursor {
+  stroke: rgba(255,115,0,0.35);
+}
+
+/* ─────────────────────────────────────────
+   MOBILE SAFE SPACING
+───────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
 }
