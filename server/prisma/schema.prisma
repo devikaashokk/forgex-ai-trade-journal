@@ -1,5 +1,3 @@
-// server/prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,42 +8,40 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(cuid())
-  email          String   @unique
+  id             String         @id @default(cuid())
+  email          String         @unique
   name           String
   passwordHash   String
-  initialBalance Float    @default(0)
-  currency       String   @default("INR")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  trades        Trade[]
-  refreshTokens RefreshToken[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  currency       String         @default("INR")
+  initialBalance Float          @default(0)
+  refreshTokens  RefreshToken[]
+  trades         Trade[]
 
   @@map("users")
 }
 
 model Trade {
-  id          String         @id @default(cuid())
-  userId      String
-  pair        String         // e.g., "EUR/USD"
-  direction   TradeDirection
-  entryPrice  Float
-  exitPrice   Float
-  stopLoss    Float
-  takeProfit  Float
-  lotSize     Float          @default(0.01)
-  pnl         Float          // Profit/Loss in USD
-  rrRatio     Float          // Risk/Reward ratio achieved
-  emotion     TradeEmotion
-  notes       String         @default("")
-  isWin       Boolean
-  openedAt    DateTime
-  closedAt    DateTime
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String         @id @default(cuid())
+  userId     String
+  pair       String
+  direction  TradeDirection
+  entryPrice Float
+  exitPrice  Float
+  stopLoss   Float
+  takeProfit Float
+  lotSize    Float          @default(0.01)
+  pnl        Float
+  rrRatio    Float
+  emotion    TradeEmotion
+  notes      String         @default("")
+  isWin      Boolean
+  openedAt   DateTime
+  closedAt   DateTime
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([userId, closedAt])
@@ -58,8 +54,7 @@ model RefreshToken {
   userId    String
   expiresAt DateTime
   createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("refresh_tokens")
